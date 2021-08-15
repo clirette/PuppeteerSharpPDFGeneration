@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Puppeteer_Sharp.Models;
 using PuppeteerSharp;
 
 namespace Puppeteer_Sharp.Controllers
@@ -8,9 +9,10 @@ namespace Puppeteer_Sharp.Controllers
     [Route("[controller]")]
     public class PdfController : ControllerBase
     {
-        [HttpGet]
-        public async Task<byte[]> GetPdfData(string html)
+        [HttpPost]
+        public async Task<byte[]> GetPdfData([FromBody] PDFRequest request)
         {
+            var html = request.html;
             var browserFetcher = new BrowserFetcher();
             await browserFetcher.DownloadAsync();
             await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions {
